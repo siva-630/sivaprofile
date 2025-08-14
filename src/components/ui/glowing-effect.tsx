@@ -1,0 +1,249 @@
+
+"use client";
+
+import { memo, useCallback, useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
+import { animate } from "motion";
+
+interface GlowingEffectProps {
+  blur?: number;
+  inactiveZone?: number;
+  proximity?: number;
+  spread?: number;
+  variant?: "default" | "white";
+  glow?: boolean;
+  className?: string;
+  disabled?: boolean;
+  movementDuration?: number;
+  borderWidth?: number;
+  autoAnimate?: boolean;
+  animationSpeed?: number; // Degrees per second
+}
+const GlowingEffect = memo(
+  ({
+    blur = 0,
+    inactiveZone = 0.7,
+    proximity = 0,
+    spread = 20,
+    variant = "default",
+    glow = false,
+    className,
+    movementDuration = 2,
+    borderWidth = 1,
+    disabled = true,
+    autoAnimate = false,
+    animationSpeed = 30,
+  }: GlowingEffectProps) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const lastPosition = useRef({ x: 0, y: 0 });
+    const animationFrameRef = useRef<number>(0);
+    const autoAnimationAngleRef = useRef(0);
+    const lastAutoAnimTimeRef = useRef(performance.now());
+
+    const handleMove = useCallback(
+      (e?: MouseEvent | { x: number; y: number }) => {
+        if (!containerRef.current) return;
+
+        if (animationFrameRef.current && !autoAnimate) { // Only cancel if not in autoAnimate mode's loop
+          cancelAnimationFrame(animationFrameRef.current);
+        }
+
+        animationFrameRef.current = requestAnimationFrame(() => {
+          const element = containerRef.current;
+          if (!element) return;
+
+          const { left, top, width, height } = element.getBoundingClientRect();
+          const mouseX = e?.x ?? lastPosition.current.x;
+          const mouseY = e?.y ?? lastPosition.current.y;
+
+          if (e && 'x' in e && 'y' in e) {
+            lastPosition.current = { x: mouseX, y: mouseY };
+          }
+
+          const center = [left + width * 0.5, top + height * 0.5];
+          const distanceFromCenter = Math.hypot(
+            mouseX - center[0],
+            mouseY - center[1]
+          );
+          const inactiveRadius = 0.5 * Math.min(width, height) * inactiveZone;
+
+          if (distanceFromCenter < inactiveRadius) {
+            element.style.setProperty("--active", "0");
+            return;
+          }
+
+          const isActive =
+            mouseX > left - proximity &&
+            mouseX < left + width + proximity &&
+            mouseY > top - proximity &&
+            mouseY < top + height + proximity;
+
+          element.style.setProperty("--active", isActive ? "1" : "0");
+
+          if (!isActive) return;
+
+          const currentAngle =
+            parseFloat(element.style.getPropertyValue("--start")) || 0;
+          let targetAngle =
+            (180 * Math.atan2(mouseY - center[1], mouseX - center[0])) /
+              Math.PI +
+            90;
+
+          const angleDiff = ((targetAngle - currentAngle + 180) % 360) - 180;
+          
+          animate(
+            (progress) => {
+               const val = currentAngle + angleDiff * progress;
+               if(element) element.style.setProperty("--start", String(val));
+            },
+            {
+              duration: movementDuration,
+              easing: [0.16, 1, 0.3, 1],
+            }
+          );
+        });
+      },
+      [inactiveZone, proximity, movementDuration, autoAnimate] // Added autoAnimate to dependencies
+    );
+
+    // Mouse-driven effect
+    useEffect(() => {
+      if (disabled || autoAnimate) {
+         if (animationFrameRef.current) { // Clean up mouse-driven animation frame if switching modes
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = 0;
+         }
+        return;
+      }
+
+      const handleScroll = () => handleMove();
+      const handlePointerMove = (e: PointerEvent) => handleMove(e);
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      document.body.addEventListener("pointermove", handlePointerMove, {
+        passive: true,
+      });
+
+      return () => {
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+          animationFrameRef.current = 0;
+        }
+        window.removeEventListener("scroll", handleScroll);
+        document.body.removeEventListener("pointermove", handlePointerMove);
+      };
+    }, [handleMove, disabled, autoAnimate]);
+
+    // Auto-animation effect
+    useEffect(() => {
+      if (disabled || !autoAnimate || !containerRef.current) {
+        if (animationFrameRef.current) { // Clean up auto-animation frame if switching modes or disabled
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = 0;
+        }
+        if (containerRef.current && !disabled && !autoAnimate) { // Reset --active if going from auto to manual
+             containerRef.current.style.setProperty("--active", "0");
+        }
+        return;
+      }
+
+      const element = containerRef.current;
+      element.style.setProperty("--active", "1"); 
+
+      const animateAngle = (currentTime: number) => {
+        if (!element || !autoAnimate || disabled) { // Check flags inside the loop too
+             if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+             return;
+        }
+        const deltaTime = (currentTime - lastAutoAnimTimeRef.current) / 1000; // seconds
+        lastAutoAnimTimeRef.current = currentTime;
+
+        autoAnimationAngleRef.current = (autoAnimationAngleRef.current + animationSpeed * deltaTime) % 360;
+        element.style.setProperty("--start", String(autoAnimationAngleRef.current));
+
+        animationFrameRef.current = requestAnimationFrame(animateAngle);
+      };
+
+      lastAutoAnimTimeRef.current = performance.now(); 
+      autoAnimationAngleRef.current = parseFloat(element.style.getPropertyValue("--start")) || 0; // Start from current angle
+      animationFrameRef.current = requestAnimationFrame(animateAngle);
+
+      return () => {
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+          animationFrameRef.current = 0;
+        }
+      };
+    }, [disabled, autoAnimate, animationSpeed, containerRef]);
+
+
+    return (
+      <>
+        <div
+          className={cn(
+            "pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity",
+            glow && "opacity-100",
+            variant === "white" && "border-white",
+            disabled && glow && "!block" 
+          )}
+        />
+        <div
+          ref={containerRef}
+          style={
+            {
+              "--blur": `${blur}px`,
+              "--spread": spread,
+              "--start": "0",
+              "--active": autoAnimate && !disabled ? "1" : "0", // Initial active state for autoAnimate
+              "--glowingeffect-border-width": `${borderWidth}px`,
+              "--repeating-conic-gradient-times": "5",
+              "--gradient":
+                variant === "white"
+                  ? `repeating-conic-gradient(
+                  from 236.84deg at 50% 50%,
+                  var(--black), 
+                  var(--black) calc(25% / var(--repeating-conic-gradient-times))
+                )`
+                  : `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%),
+                radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%),
+                radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), 
+                radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%),
+                repeating-conic-gradient(
+                  from 236.84deg at 50% 50%,
+                  #dd7bbb 0%,
+                  #d79f1e calc(25% / var(--repeating-conic-gradient-times)),
+                  #5a922c calc(50% / var(--repeating-conic-gradient-times)), 
+                  #4c7894 calc(75% / var(--repeating-conic-gradient-times)),
+                  #dd7bbb calc(100% / var(--repeating-conic-gradient-times))
+                )`,
+            } as React.CSSProperties
+          }
+          className={cn(
+            "pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity",
+            blur > 0 && "blur-[var(--blur)] ",
+            className,
+            disabled && "!hidden" 
+          )}
+        >
+          <div
+            className={cn(
+              "glow",
+              "rounded-[inherit]",
+              'after:content-[""] after:rounded-[inherit] after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))]',
+              "after:[border:var(--glowingeffect-border-width)_solid_transparent]",
+              "after:[background:var(--gradient)] after:[background-attachment:fixed]",
+              "after:opacity-[var(--active)] after:transition-opacity after:duration-300",
+              "after:[mask-clip:padding-box,border-box]",
+              "after:[mask-composite:intersect]",
+              "after:[mask-image:linear-gradient(#0000,#0000),conic-gradient(from_calc((var(--start)-var(--spread))*1deg),#00000000_0deg,#fff,#00000000_calc(var(--spread)*2deg))]"
+            )}
+          />
+        </div>
+      </>
+    );
+  }
+);
+
+GlowingEffect.displayName = "GlowingEffect";
+
+export { GlowingEffect };
