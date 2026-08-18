@@ -217,15 +217,15 @@ const Lightning: React.FC<LightningProps> = ({
 
     const aPositionLoc = uniformLocationsRef.current.aPosition;
     if (typeof aPositionLoc === 'number' && aPositionLoc !== -1) {
-        localGl.enableVertexAttribArray(aPositionLoc);
-        localGl.vertexAttribPointer(aPositionLoc, 2, localGl.FLOAT, false, 0, 0);
+      localGl.enableVertexAttribArray(aPositionLoc);
+      localGl.vertexAttribPointer(aPositionLoc, 2, localGl.FLOAT, false, 0, 0);
     }
 
     const onWindowResize = () => {
       if (resizeCanvas()) {
-         if (glRef.current) {
-            glRef.current.viewport(0, 0, glRef.current.drawingBufferWidth, glRef.current.drawingBufferHeight);
-         }
+        if (glRef.current) {
+          glRef.current.viewport(0, 0, glRef.current.drawingBufferWidth, glRef.current.drawingBufferHeight);
+        }
       }
     };
     window.addEventListener("resize", onWindowResize);
@@ -259,9 +259,9 @@ const Lightning: React.FC<LightningProps> = ({
     gl.useProgram(program);
     const aPositionLoc = locations.aPosition;
     if (typeof aPositionLoc === 'number' && aPositionLoc !== -1) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferRef.current);
-        gl.vertexAttribPointer(aPositionLoc, 2, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(aPositionLoc);
+      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferRef.current);
+      gl.vertexAttribPointer(aPositionLoc, 2, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(aPositionLoc);
     }
 
     const render = () => {
@@ -269,7 +269,7 @@ const Lightning: React.FC<LightningProps> = ({
         if (animationFrameIdRef.current) cancelAnimationFrame(animationFrameIdRef.current);
         return;
       }
-       if (!canvasRef.current.isConnected) {
+      if (!canvasRef.current.isConnected) {
         if (animationFrameIdRef.current) cancelAnimationFrame(animationFrameIdRef.current);
         return;
       }
