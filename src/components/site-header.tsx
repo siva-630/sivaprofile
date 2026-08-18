@@ -6,7 +6,7 @@ import { useState } from "react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Sparkles } from "lucide-react";
+import { Menu, Sparkles, FileText } from "lucide-react";
 
 export default function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -49,7 +49,13 @@ export default function SiteHeader() {
         </nav>
         
         {/* Toggles and Mobile Menu */}
-        <div className="flex items-center ml-4">
+        <div className="flex items-center ml-4 space-x-2">
+          <Button variant="ghost" size="icon" className="text-primary-foreground" asChild title="Download Resume">
+            <a href="/resume.pdf" download="N-Siva-Shankar-Resume.pdf">
+              <FileText className="h-[1.2rem] w-[1.2rem]" />
+              <span className="sr-only">Download Resume</span>
+            </a>
+          </Button>
           <ModeToggle />
           
           <div className="md:hidden ml-2">

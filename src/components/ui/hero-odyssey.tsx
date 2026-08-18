@@ -385,86 +385,21 @@ export const HeroSection: React.FC = () => {
           animate="visible"
           className="relative z-30 flex flex-col items-center text-center max-w-4xl mx-auto mt-0"
         >
-          {/* Mobile view for VaporizeTextCycle */}
-          <motion.div variants={itemVariants} className="w-full mb-2 h-[80px] flex md:hidden items-center justify-center">
-            <VaporizeTextCycle
-              texts={["N . SIVA SHANKAR"]}
-              font={{
-                fontFamily: "Roboto, sans-serif",
-                fontSize: "36px",
-                fontWeight: 300,
-              }}
-              color={nameColor}
-              spread={8}
-              density={10}
-              animation={{
-                vaporizeDuration: 2,
-                fadeInDuration: 1.5,
-                waitDuration: 11.5,
-              }}
-              direction="left-to-right"
-              alignment="center"
-              tag={Tag.H1}
-            />
-          </motion.div>
-
-          {/* Desktop view for VaporizeTextCycle */}
-          <motion.div variants={itemVariants} className="w-full mb-2 h-[120px] hidden md:flex items-center justify-center">
-            <VaporizeTextCycle
-              texts={["N . SIVA SHANKAR"]}
-              font={{
-                fontFamily: "Roboto, sans-serif",
-                fontSize: "48px",
-                fontWeight: 300,
-              }}
-              color={nameColor}
-              spread={8}
-              density={10}
-              animation={{
-                vaporizeDuration: 2,
-                fadeInDuration: 1.5,
-                waitDuration: 11.5,
-              }}
-              direction="left-to-right"
-              alignment="center"
-              tag={Tag.H1}
-            />
+          <motion.div variants={itemVariants} className="w-full mb-4 mt-6">
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase"
+              style={{ color: nameColor, textShadow: `0 0 20px ${nameColor}80` }}
+            >
+              N . SIVA SHANKAR
+            </h1>
           </motion.div>
 
           <motion.div
             variants={itemVariants}
-            className="text-2xl sm:text-4xl md:text-5xl pb-3 font-bold"
-            style={{ color: nameColor }}
+            className="text-xl sm:text-2xl md:text-3xl font-medium tracking-wide mt-2 mb-10 text-white/90"
           >
-            <span>I am a </span>
-            <Typewriter
-              text={["full stack developer", "UI & UX designer"]}
-              speed={60}
-              waitTime={2500}
-              deleteSpeed={40}
-              loop={true}
-              cursorChar={"_"}
-            />
+            I am a Full Stack Developer
           </motion.div>
-
-          <StarBorder
-            color={dynamicBorderColor}
-            className="mt-10 sm:mt-12"
-            as="div"
-          >
-            <motion.a
-              href="/resume.pdf"
-              download="N-Siva-Shankar-Resume.pdf"
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center w-full h-full text-foreground"
-              aria-label="Download Resume"
-            >
-              <FileText className="h-6 w-6 mr-2" />
-              Resume
-            </motion.a>
-          </StarBorder>
 
         </motion.div>
       </div>
