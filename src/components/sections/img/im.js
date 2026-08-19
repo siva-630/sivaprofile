@@ -1,6 +1,6 @@
 
 import React from 'react'
-import siva from './k.jpg'
+import siva from './a.png'
 import cal from './cal.png'
 import q from './q.png'
 import clock from './clock.png'
@@ -10,7 +10,7 @@ import contact from './contact.png'
 import fcp from './fcp.png'
 
 
-export default{
+export default {
     siva,
     cal,
     q,

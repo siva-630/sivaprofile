@@ -7,6 +7,9 @@ import VaporizeTextCycle, { Tag } from '@/components/ui/vapour-text-effect';
 import { Typewriter } from '@/components/ui/typewriter';
 import { FileText } from 'lucide-react';
 import { StarBorder } from '@/components/ui/star-border';
+import Image from 'next/image';
+
+import im from '../sections/img/im';
 
 
 interface LightningProps {
@@ -377,52 +380,55 @@ export const HeroSection: React.FC = () => {
   const dynamicBorderColor = useMemo(() => `hsl(${displayHue}, 100%, 70%)`, [displayHue]);
 
   return (
-    <div className="relative w-full bg-black text-white overflow-hidden min-h-screen">
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 sm:py-6 h-full flex flex-col items-center justify-center">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="relative z-30 flex flex-col items-center text-center max-w-4xl mx-auto mt-0"
-        >
-          <motion.div variants={itemVariants} className="w-full mb-4 mt-6">
-            <h1
-              className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight uppercase"
-              style={{ color: nameColor, textShadow: `0 0 20px ${nameColor}80` }}
-            >
-              N . SIVA SHANKAR
-            </h1>
-          </motion.div>
+    <div className="relative w-full bg-black text-white min-h-screen">
 
-          <motion.div
-            variants={itemVariants}
-            className="text-xl sm:text-2xl md:text-3xl font-medium tracking-wide mt-2 mb-10 text-white/90"
-          >
-            I am a Full Stack Developer
-          </motion.div>
-
-        </motion.div>
+      {/* ── Backgrounds (z-0, behind everything) ── */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute top-[55%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[calc(100vw+200px)] max-w-[1000px] h-[calc(100vw+200px)] max-h-[1000px] sm:w-[800px] sm:h-[800px] rounded-full bg-gradient-to-b from-blue-500/20 to-purple-600/10 blur-3xl"></div>
+        <div className="absolute top-0 w-full left-0 h-full">
+          <Lightning hue={displayHue} xOffset={0} speed={1.6} intensity={0.6} size={2} />
+        </div>
+        <div className="absolute top-[55%] left-1/2 transform -translate-x-1/2 w-[calc(80vw+100px)] max-w-[800px] h-[calc(80vw+100px)] max-h-[800px] sm:w-[600px] sm:h-[600px] backdrop-blur-3xl rounded-full bg-[radial-gradient(circle_at_25%_90%,_#1e386b_15%,_#000000de_70%,_#000000ed_100%)]"></div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="absolute inset-0 z-0"
-      >
-        <div className="absolute inset-0 bg-black/80"></div>
-        <div className="absolute top-[55%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[calc(100vw+200px)] max-w-[1000px] h-[calc(100vw+200px)] max-h-[1000px] sm:w-[800px] sm:h-[800px] rounded-full bg-gradient-to-b from-blue-500/20 to-purple-600/10 blur-3xl"></div>
-        <div className="absolute top-0 w-[100%] left-1/2 transform -translate-x-1/2 h-full">
-          <Lightning
-            hue={displayHue}
-            xOffset={0}
-            speed={1.6}
-            intensity={0.6}
-            size={2}
-          />
+      {/* ── Foreground content ── */}
+      <div className="relative z-10 min-h-screen flex items-center">
+        <div className="w-full max-w-7xl mx-auto px-6 lg:px-16 py-24">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="flex justify-center lg:justify-start"
+          >
+            {/* ── LEFT: ID Card ── */}
+            <motion.div
+              variants={itemVariants}
+              className="flex justify-center lg:justify-start pt-8"
+            >
+              <div className="id-card-wrapper">
+                <div className="id-card">
+                  <div className="id-card-clip"></div>
+                  <Image
+                    src={im.siva}
+                    alt="Siva Shankar Profile"
+                    width={120}
+                    height={120}
+                    className="rounded-full object-cover border-[3px] border-[#22d3ee] mt-[20px] mb-[15px]"
+                    style={{ transform: 'translateZ(30px)' }}
+                    data-ai-hint="profile photo"
+                    priority
+                  />
+                  <div className="id-card-text">SIVA SHANKAR<br /></div>
+                </div>
+              </div>
+            </motion.div>
+
+
+          </motion.div>
         </div>
-        <div className="z-10 absolute top-[55%] left-1/2 transform -translate-x-1/2  w-[calc(80vw+100px)] max-w-[800px] h-[calc(80vw+100px)] max-h-[800px] sm:w-[600px] sm:h-[600px] backdrop-blur-3xl rounded-full bg-[radial-gradient(circle_at_25%_90%,_#1e386b_15%,_#000000de_70%,_#000000ed_100%)]"></div>
-      </motion.div>
+      </div>
+
     </div>
   );
 };

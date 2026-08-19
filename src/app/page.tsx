@@ -10,7 +10,6 @@ export default function Home() {
   return (
     <>
       <HeroSection /> {/* Using the new HeroSection from hero-odyssey */}
-      <AboutMeSection />
       <SocialLinksSection />
       <SkillsSection />
       <ProjectsSection />

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GlowingEffect } from '@/components/ui/glowing-effect';
 
-import imgs from './img/im'
+import im from './img/im';
 
 export default function AboutMeSection() {
   return (
@@ -20,17 +20,21 @@ export default function AboutMeSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-2 items-center md:gap-10">
           <div className="flex justify-center lg:justify-start">
-            <div className="relative group w-full max-w-[350px] mx-auto lg:mx-50 ml-100">
-              <Image
-                src={imgs.siva}
-                alt="About Me Photo"
-                width={500}
-                height={600}
-                className="rounded-xl object-cover object-center shadow-2xl w-full h-auto transform transition-all duration-300 group-hover:scale-105"
-                data-ai-hint="about me photo"
-                priority
-              />
-               
+            <div className="id-card-wrapper mx-auto lg:mx-auto">
+              <div className="id-card">
+                <div className="id-card-clip"></div>
+                <Image
+                  src={im.siva}
+                  alt="About Me Photo"
+                  width={120}
+                  height={120}
+                  className="rounded-full object-cover border-[3px] border-[#22d3ee] mt-[20px] mb-[15px]"
+                  style={{ transform: 'translateZ(30px)' }}
+                  data-ai-hint="about me photo"
+                  priority
+                />
+                <div className="id-card-text">SIVA SHANKAR<br /></div>
+              </div>
             </div>
           </div>
           <div className="space-y-4 md:space-y-6">
