@@ -279,12 +279,6 @@
     border-radius: 2px;
   }
 
-  .id-card:hover {
-    animation: swingIdCard 2s ease-in-out infinite;
-  }
-
-
-
   .id-card img {
     width: 120px;
     height: 120px;

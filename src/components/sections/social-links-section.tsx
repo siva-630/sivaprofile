@@ -1,4 +1,8 @@
+"use client";
+
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { Share2, X } from 'lucide-react';
 
 const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="#0A66C2" {...props}>
@@ -72,30 +76,49 @@ const socialLinks = [
 ];
 
 export default function SocialLinksSection() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center p-2 gap-6 bg-black/30 backdrop-blur-md rounded-r-2xl border border-gray-800/50 shadow-2xl py-6">
-      {socialLinks.map((link) => (
-        <Link 
-          key={link.name} 
-          href={link.url} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="group relative flex items-center justify-center p-2 rounded-full transition-all duration-300 hover:bg-gray-800/50"
-          title={link.name}
+    <>
+      <div className={`md:hidden fixed left-0 top-1/2 transform -translate-y-1/2 z-[60] transition-all duration-300 ${isOpen ? '-translate-x-full' : 'translate-x-0'}`}>
+        <button 
+          onClick={() => setIsOpen(true)}
+          className="p-3 bg-black/60 backdrop-blur-md border border-gray-800/50 shadow-2xl rounded-r-xl flex items-center justify-center text-gray-300 hover:text-white"
         >
-          {link.isTextLogo ? (
-            <span className="font-[cursive] text-lg font-bold text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300 select-none px-1">
-              Credly
+          <Share2 className="w-5 h-5" />
+        </button>
+      </div>
+
+      <div className={`fixed left-0 top-1/2 transform -translate-y-1/2 z-50 flex flex-col items-center p-2 gap-4 sm:gap-6 bg-black/60 md:bg-black/30 backdrop-blur-md rounded-r-2xl border border-gray-800/50 shadow-2xl py-4 sm:py-6 transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+        <button 
+          className="md:hidden absolute top-[-10px] right-[-30px] p-2 bg-black/60 backdrop-blur-md border border-gray-800/50 rounded-r-xl" 
+          onClick={() => setIsOpen(false)}
+        >
+           <X className="w-4 h-4 text-gray-300" />
+        </button>
+        {socialLinks.map((link) => (
+          <Link 
+            key={link.name} 
+            href={link.url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="group relative flex items-center justify-center p-2 rounded-full transition-all duration-300 hover:bg-gray-800/50"
+            title={link.name}
+          >
+            {link.isTextLogo ? (
+              <span className="font-[cursive] text-lg font-bold text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300 select-none px-1">
+                Credly
+              </span>
+            ) : link.icon ? (
+              <link.icon className="h-5 w-5 sm:h-7 sm:w-7 text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300 drop-shadow-md" />
+            ) : null}
+            
+            <span className="absolute left-full ml-4 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap hidden sm:block">
+              {link.name}
             </span>
-          ) : link.icon ? (
-            <link.icon className="h-6 w-6 sm:h-7 sm:w-7 text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300 drop-shadow-md" />
-          ) : null}
-          
-          <span className="absolute left-full ml-4 px-2 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap hidden sm:block">
-            {link.name}
-          </span>
-        </Link>
-      ))}
-    </div>
+          </Link>
+        ))}
+      </div>
+    </>
   );
 }

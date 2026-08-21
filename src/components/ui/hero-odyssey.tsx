@@ -8,6 +8,7 @@ import { Typewriter } from '@/components/ui/typewriter';
 import { FileText } from 'lucide-react';
 import { StarBorder } from '@/components/ui/star-border';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
 
 import im from '../sections/img/im';
 
@@ -290,14 +291,14 @@ const Lightning: React.FC<LightningProps> = ({
 
       currentGl.useProgram(currentProgram);
 
-      currentGl.uniform2f(currentLocations.iResolution, currentGl.drawingBufferWidth, currentGl.drawingBufferHeight);
+      currentGl.uniform2f(currentLocations.iResolution as WebGLUniformLocation | null, currentGl.drawingBufferWidth, currentGl.drawingBufferHeight);
       const currentTimeVal = performance.now();
-      currentGl.uniform1f(currentLocations.iTime, (currentTimeVal - startTimeRef.current) / 1000.0);
-      currentGl.uniform1f(currentLocations.uHue, hue);
-      currentGl.uniform1f(currentLocations.uXOffset, xOffset);
-      currentGl.uniform1f(currentLocations.uSpeed, speed);
-      currentGl.uniform1f(currentLocations.uIntensity, intensity);
-      currentGl.uniform1f(currentLocations.uSize, size);
+      currentGl.uniform1f(currentLocations.iTime as WebGLUniformLocation | null, (currentTimeVal - startTimeRef.current) / 1000.0);
+      currentGl.uniform1f(currentLocations.uHue as WebGLUniformLocation | null, hue);
+      currentGl.uniform1f(currentLocations.uXOffset as WebGLUniformLocation | null, xOffset);
+      currentGl.uniform1f(currentLocations.uSpeed as WebGLUniformLocation | null, speed);
+      currentGl.uniform1f(currentLocations.uIntensity as WebGLUniformLocation | null, intensity);
+      currentGl.uniform1f(currentLocations.uSize as WebGLUniformLocation | null, size);
 
       currentGl.drawArrays(currentGl.TRIANGLES, 0, 6);
       animationFrameIdRef.current = requestAnimationFrame(render);
@@ -399,12 +400,12 @@ export const HeroSection: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="flex justify-center lg:justify-start"
+            className="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-12 lg:gap-16 w-full"
           >
             {/* ── LEFT: ID Card ── */}
             <motion.div
               variants={itemVariants}
-              className="flex justify-center lg:justify-start pt-8"
+              className="flex justify-center lg:justify-start pt-8 w-full lg:w-auto"
             >
               <div className="id-card-wrapper">
                 <div className="id-card">
@@ -424,6 +425,24 @@ export const HeroSection: React.FC = () => {
               </div>
             </motion.div>
 
+            {/* ── RIGHT: About Me Box ── */}
+            <motion.div
+              variants={itemVariants}
+              className="w-full max-w-[280px] sm:max-w-sm lg:ml-auto mt-8 lg:mt-0"
+            >
+              <div className="relative p-6 rounded-3xl bg-white/5 border border-white/10 shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-white/10 flex flex-col">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl opacity-50 pointer-events-none"></div>
+                <h3 
+                  className="text-xl sm:text-2xl font-bold mb-4 tracking-tight relative z-10" 
+                  style={{ color: dynamicBorderColor }}
+                >
+                  Hello! I'm Siva Shankar
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed relative z-10">
+                  Computer Science undergraduate (AI & Data Science) skilled in Java, JavaScript, SQL, Data Structures & Algorithms, React.js, Node.js, Express.js, MongoDB, and REST APIs.<br/><br/>Seeking a Software Engineer role to deliver reliable, scalable, and high-quality software solutions.
+                </p>
+              </div>
+            </motion.div>
 
           </motion.div>
         </div>

@@ -1,116 +1,82 @@
-
 "use client";
 
-import { useRef, useState, useEffect, useCallback } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { useRef, useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Lightbulb, Cpu, Code, Database, Palette, Cloud, Wind, Github, Server, Box, Figma, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
 import { GlowingEffect } from '@/components/ui/glowing-effect';
+import { 
+  FaHtml5, FaCss3Alt, FaReact, FaNodeJs, FaPython, 
+  FaDocker, FaGithub, FaFigma, FaJava, FaAws 
+} from 'react-icons/fa';
+import { 
+  SiTailwindcss, SiJavascript, SiNextdotjs, SiExpress, 
+  SiMongodb, SiPostgresql, SiFirebase, SiTypescript, 
+  SiPrisma, SiRedux, SiGraphql 
+} from 'react-icons/si';
 
-interface Skill {
-  name: string;
-  description: string;
-  icon: LucideIcon;
-  level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
-}
-
-const skillsData: Skill[] = [
-  { name: 'HTML5', description: 'Proficient in semantic HTML structure and modern web standards.', icon: Code, level: 'Advanced' },
-  { name: 'CSS3', description: 'Skilled in styling with CSS3, Flexbox, and Grid for responsive web design.', icon: Palette, level: 'Advanced' },
-  { name: 'Tailwind CSS', description: 'Proficient in building responsive and modern UIs with the utility-first CSS framework Tailwind CSS.', icon: Wind, level: 'Advanced' },
-  { name: 'JavaScript', description: 'Strong understanding of ES6+ JavaScript, DOM manipulation, and asynchronous programming.', icon: Code, level: 'Advanced' },
-  { name: 'React & Next.js', description: 'Experienced in building dynamic UIs with React and server-rendered applications with Next.js.', icon: Code, level: 'Intermediate' },
-  { name: 'Node.js', description: 'Experience with server-side JavaScript using Node.js and Express.', icon: Database, level: 'Intermediate' },
-  { name: 'Python', description: 'Experience with Python for scripting and backend development.', icon: Code, level: 'Intermediate' },
-  { name: 'SQL', description: 'Proficient in writing SQL queries for databases like PostgreSQL and MySQL.', icon: Database, level: 'Intermediate' },
-  { name: 'Firebase', description: 'Familiar with Firebase services like Firestore, Authentication, and Hosting for full-stack development.', icon: Cloud, level: 'Intermediate' },
-  { name: 'REST APIs', description: 'Skilled in designing, building, and consuming RESTful APIs.', icon: Server, level: 'Advanced' },
-  { name: 'Git & GitHub', description: 'Proficient with version control using Git and collaborating on GitHub.', icon: Github, level: 'Advanced' },
-  { name: 'Docker', description: 'Experience with containerizing applications using Docker for consistent environments.', icon: Box, level: 'Beginner' },
-  { name: 'Figma', description: 'Skilled in creating wireframes, mockups, and prototypes using Figma.', icon: Figma, level: 'Advanced' },
-  { name: 'AI/ML Concepts', description: 'Basic understanding of machine learning concepts and experience with AI APIs.', icon: Cpu, level: 'Beginner' },
-  { name: 'UI/UX Design', description: 'Knowledge of UI/UX principles, wireframing, and prototyping tools.', icon: Lightbulb, level: 'Intermediate' },
+const fullstackIcons = [
+  { icon: FaHtml5, color: '#E34F26', name: 'HTML5' },
+  { icon: FaCss3Alt, color: '#1572B6', name: 'CSS3' },
+  { icon: SiJavascript, color: '#F7DF1E', name: 'JavaScript' },
+  { icon: SiTypescript, color: '#3178C6', name: 'TypeScript' },
+  { icon: FaReact, color: '#61DAFB', name: 'React' },
+  { icon: SiNextdotjs, color: '#ffffff', name: 'Next.js' },
+  { icon: SiTailwindcss, color: '#06B6D4', name: 'Tailwind CSS' },
+  { icon: FaNodeJs, color: '#339933', name: 'Node.js' },
+  { icon: SiExpress, color: '#ffffff', name: 'Express' },
+  { icon: FaPython, color: '#3776AB', name: 'Python' },
+  { icon: FaJava, color: '#007396', name: 'Java' },
+  { icon: SiMongodb, color: '#47A248', name: 'MongoDB' },
+  { icon: SiPostgresql, color: '#4169E1', name: 'PostgreSQL' },
+  { icon: SiFirebase, color: '#FFCA28', name: 'Firebase' },
+  { icon: SiPrisma, color: '#2D3748', name: 'Prisma' },
+  { icon: SiRedux, color: '#764ABC', name: 'Redux' },
+  { icon: SiGraphql, color: '#E10098', name: 'GraphQL' },
+  { icon: FaAws, color: '#FF9900', name: 'AWS' },
+  { icon: FaDocker, color: '#2496ED', name: 'Docker' },
+  { icon: FaGithub, color: '#ffffff', name: 'GitHub' },
+  { icon: FaFigma, color: '#F24E1E', name: 'Figma' },
 ];
 
 export default function SkillsSection() {
-  const skillsInFirstRow = 8;
-  const skillRows = [
-    { skills: skillsData.slice(0, skillsInFirstRow) },
-    { skills: skillsData.slice(skillsInFirstRow) },
-  ];
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const scrollContainerRefs = skillRows.map(() => useRef<HTMLDivElement>(null));
-  const [scrollStates, setScrollStates] = useState(
-    skillRows.map(() => ({ canScrollLeft: false, canScrollRight: false }))
-  );
-
-  const updateScrollability = useCallback((rowIndex: number) => {
-    const container = scrollContainerRefs[rowIndex].current;
+  const updateScrollability = () => {
+    const container = scrollContainerRef.current;
     if (container) {
       const { scrollLeft, scrollWidth, clientWidth } = container;
-      const canScrollLeft = scrollLeft > 5;
-      const canScrollRight = scrollWidth - clientWidth - scrollLeft > 5;
-      
-      setScrollStates(prevStates => {
-        const newStates = [...prevStates];
-        if (newStates[rowIndex].canScrollLeft !== canScrollLeft || newStates[rowIndex].canScrollRight !== canScrollRight) {
-          newStates[rowIndex] = { canScrollLeft, canScrollRight };
-          return newStates;
-        }
-        return prevStates;
-      });
+      setCanScrollLeft(scrollLeft > 5);
+      setCanScrollRight(scrollWidth - clientWidth - scrollLeft > 5);
     }
-  }, [scrollContainerRefs]); 
+  };
 
   useEffect(() => {
-    const observers: ResizeObserver[] = [];
-    const currentRefs = scrollContainerRefs.map(ref => ref.current);
-
-    currentRefs.forEach((container, index) => {
-      if (container) {
-        updateScrollability(index);
-        container.addEventListener('scroll', () => updateScrollability(index), { passive: true });
-        
-        const observer = new ResizeObserver(() => updateScrollability(index));
-        observer.observe(container);
-        observers.push(observer);
-      }
-    });
-
-    let resizeTimeout: NodeJS.Timeout;
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        currentRefs.forEach((_, index) => updateScrollability(index));
-      }, 100);
-    };
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      clearTimeout(resizeTimeout);
-      currentRefs.forEach((container, index) => {
-        if (container) {
-            container.removeEventListener('scroll', () => updateScrollability(index));
-        }
-      });
-      observers.forEach(observer => observer.disconnect());
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [updateScrollability, skillsData]);
-
-  const handleScrollClick = (rowIndex: number, direction: 'left' | 'right') => {
-    const container = scrollContainerRefs[rowIndex].current;
+    const container = scrollContainerRef.current;
     if (container) {
-      const scrollAmount = 220 + 32; // card width + gap
+      updateScrollability();
+      container.addEventListener('scroll', updateScrollability, { passive: true });
+      window.addEventListener('resize', updateScrollability);
+    }
+    return () => {
+      if (container) {
+        container.removeEventListener('scroll', updateScrollability);
+      }
+      window.removeEventListener('resize', updateScrollability);
+    };
+  }, []);
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const scrollAmount = 300;
       container.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
     }
   };
 
   return (
-    <section id="skills" className="relative w-full py-12 md:py-16 lg:py-24 bg-black text-gray-200">
+    <section id="skills" className="relative w-full pt-16 md:pt-24 lg:pt-32 pb-8 md:pb-12 lg:pb-16 bg-black text-gray-200 overflow-hidden">
       <GlowingEffect
         disabled={false}
         autoAnimate={false}
@@ -118,82 +84,77 @@ export default function SkillsSection() {
         proximity={50}
         inactiveZone={0.3}
         movementDuration={0.5}
-        spread={30}
-        borderWidth={2}
+        spread={40}
+        borderWidth={1}
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-8 md:mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col items-center justify-center text-center mb-16 md:mb-24">
           <h2
-            className="text-3xl sm:text-4xl font-bold tracking-tighter"
+            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter"
             style={{ color: `hsl(var(--portfolio-brand-hue, 230), 100%, 70%)` }}
           >
-            My Skillset
+            Skills
           </h2>
-          <p className="max-w-[700px] text-gray-300 text-base sm:text-xl/relaxed">
-            A glimpse into the technologies and tools I work with to bring ideas to life.
-          </p>
         </div>
-        <TooltipProvider delayDuration={100}>
-          {skillRows.map(({ skills }, rowIndex) => (
-            <div key={rowIndex} className="relative group/scrollable-row mb-8 last:mb-0">
-              {scrollStates[rowIndex]?.canScrollLeft && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="absolute left-2 top-1/2 -translate-y-1/2 z-20 rounded-full bg-background/70 hover:bg-background text-foreground opacity-100 transition-opacity duration-300 shadow-lg md:opacity-0 md:group-hover/scrollable-row:opacity-100"
-                  onClick={() => handleScrollClick(rowIndex, 'left')}
-                  aria-label="Scroll skills left"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </Button>
-              )}
-              <div
-                ref={scrollContainerRefs[rowIndex]}
-                className="flex overflow-x-auto gap-8 px-4 sm:px-8 py-4 scrollbar-hide"
+
+        <div className="relative w-full group/scrollable">
+          {/* Gradient Overlays */}
+          <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-black to-transparent z-20 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-black to-transparent z-20 pointer-events-none" />
+
+          {/* Navigation Buttons */}
+          {canScrollLeft && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-background/70 hover:bg-background text-foreground opacity-100 transition-opacity duration-300 shadow-lg md:opacity-0 md:group-hover/scrollable:opacity-100"
+              onClick={() => handleScroll('left')}
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+          )}
+
+          {canScrollRight && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-30 rounded-full bg-background/70 hover:bg-background text-foreground opacity-100 transition-opacity duration-300 shadow-lg md:opacity-0 md:group-hover/scrollable:opacity-100"
+              onClick={() => handleScroll('right')}
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
+          )}
+
+          {/* Icon Track */}
+          <div
+            ref={scrollContainerRef}
+            className="flex overflow-x-auto gap-8 sm:gap-12 md:gap-16 scrollbar-hide py-8 px-16"
+          >
+            {fullstackIcons.map((item, index) => (
+              <div 
+                key={index} 
+                className="flex-shrink-0 flex flex-col items-center justify-center group cursor-pointer"
               >
-                {skills.map((skill) => (
-                  <div key={skill.name} className="flex-shrink-0 w-[220px]">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Card className="relative text-center shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer group hover:border-primary transform hover:scale-105 bg-card text-card-foreground h-full">
-                          <GlowingEffect
-                            disabled={false}
-                            autoAnimate={false}
-                            glow={true}
-                            proximity={50}
-                            inactiveZone={0.3}
-                            movementDuration={0.5}
-                            spread={30}
-                            borderWidth={2}
-                          />
-                          <CardContent className="p-4 flex flex-col items-center justify-center space-y-3 h-full">
-                            <skill.icon className="h-12 w-12 text-accent group-hover:text-primary transition-colors duration-300" />
-                            <h3 className="text-lg font-semibold">{skill.name}</h3>
-                            <Badge variant={skill.level === 'Advanced' || skill.level === 'Expert' ? 'default' : 'secondary'}>{skill.level}</Badge>
-                          </CardContent>
-                        </Card>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" className="max-w-xs bg-popover text-popover-foreground p-3 rounded-md shadow-lg">
-                        <p>{skill.description}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                ))}
-              </div>
-              {scrollStates[rowIndex]?.canScrollRight && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 z-20 rounded-full bg-background/70 hover:bg-background text-foreground opacity-100 transition-opacity duration-300 shadow-lg md:opacity-0 md:group-hover/scrollable-row:opacity-100"
-                  onClick={() => handleScrollClick(rowIndex, 'right')}
-                  aria-label="Scroll skills right"
+                <div 
+                  className="relative flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:bg-white/10 group-hover:border-white/20"
                 >
-                  <ChevronRight className="h-5 w-5" />
-                </Button>
-              )}
-            </div>
-          ))}
-        </TooltipProvider>
+                  <item.icon 
+                    className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 opacity-80 group-hover:opacity-100 transition-all duration-300"
+                    style={{ 
+                      color: item.color,
+                      filter: `drop-shadow(0 0 8px ${item.color}40)` 
+                    }} 
+                  />
+                </div>
+                <span className="mt-4 text-xs sm:text-sm font-medium text-gray-500 group-hover:text-gray-200 transition-colors duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
+                  {item.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
