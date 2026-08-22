@@ -45,7 +45,7 @@ const socialLinks = [
   {
     name: 'LinkedIn',
     icon: LinkedinIcon,
-    url: '#',
+    url: 'https://www.linkedin.com/in/n-siva-shankar-684b3130a/',
   },
   {
     name: 'GitHub',
@@ -55,22 +55,22 @@ const socialLinks = [
   {
     name: 'LeetCode',
     icon: LeetcodeIcon,
-    url: '#',
+    url: 'https://leetcode.com/u/Siva_63/',
   },
   {
     name: 'GeeksForGeeks',
     icon: GfgIcon,
-    url: '#',
+    url: 'https://www.geeksforgeeks.org/profile/siva63sxf7?tab=activity',
   },
   {
     name: 'Cloud',
     icon: CloudIcon,
-    url: '#',
+    url: 'https://www.skills.google/public_profiles/b9e9023c-93f5-402c-babd-8f33e5d9a639',
   },
   {
     name: 'Credly',
     icon: null,
-    url: '#',
+    url: 'https://www.credly.com/users/nallamati-siva-shankar/badges/credly',
     isTextLogo: true,
   },
 ];

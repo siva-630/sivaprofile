@@ -48,10 +48,10 @@ export default function ContactSection() {
   };
 
   const socialLinks = [
-    { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/in/n-siva-shankar-684b3130a/', 'aria-label': 'LinkedIn Profile'},
-    { name: 'GitHub', icon: Github, href: 'https://github.com/siva-630', 'aria-label': 'GitHub Profile'},
-    { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/yourusername', 'aria-label': 'Twitter Profile'},
-    { name: 'Email', icon: Mail, href: 'mailto:nsiva1532@gmail.com', 'aria-label': 'Send an Email'},
+    { name: 'LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/in/n-siva-shankar-684b3130a/', 'aria-label': 'LinkedIn Profile' },
+    { name: 'GitHub', icon: Github, href: 'https://github.com/siva-630', 'aria-label': 'GitHub Profile' },
+    { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/yourusername', 'aria-label': 'Twitter Profile' },
+    { name: 'Email', icon: Mail, href: 'mailto:siva630029@gmail.com', 'aria-label': 'Send an Email' },
   ];
 
   return (
@@ -169,7 +169,7 @@ export default function ContactSection() {
                 </CardHeader>
                 <CardContent className="space-y-4 p-4">
                   <p className="text-gray-400">
-                    Email: <a href="mailto:nsiva1532@gmail.com" style={{ color: `hsl(var(--portfolio-brand-hue, 230), 100%, 70%)` }} className="hover:underline">nsiva1532@gmail.com</a>
+                    Email: <a href="mailto:siva630029@gmail.com" style={{ color: `hsl(var(--portfolio-brand-hue, 230), 100%, 70%)` }} className="hover:underline">siva630029@gmail.com</a>
                   </p>
                   <p className="text-gray-400">
                     Location: India

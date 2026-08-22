@@ -23,15 +23,24 @@ export interface Project {
 
 const projectsData: Project[] = [
   {
-    title: 'filecompress',
-    description: 'File compression reduces a file’s size by encoding its data more efficiently, saving storage space and transfer time.',
-    imageUrl: imgs.fcp,
-    videoUrl: '#',
-    tags: ['React', 'Tailwind CSS', 'Express' ,'clerk','lovable'],
-    liveLink: 'https://compress-siva.vercel.app/',
-    repoLink: 'https://github.com/siva-630/compress-on-the-fly',
-    dataAiHint: 'online store',
-    level: 2,
+    title: 'SocialFlow AI',
+    description: 'A full-stack social media automation platform built using the MERN Stack, Gemini AI, and CodeRabbit. Generates AI-powered content, schedules posts, and manages campaigns.',
+    imageUrl: imgs.socialflow,
+    tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Gemini AI'],
+    liveLink: 'https://ai-social-media-automation-navy.vercel.app/',
+    repoLink: 'https://github.com/siva-630/AI-Social-Media-Automation',
+    dataAiHint: 'social media automation',
+    level: 3,
+  },
+  {
+    title: 'ShowTime',
+    description: 'AI-Integrated Movie Booking Platform enabling users to discover movies, select seats, and book tickets. Enhanced with Google Gemini for personalized recommendations and chatbot assistance.',
+    imageUrl: imgs.showtime,
+    tags: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Clerk', 'Gemini AI'],
+    liveLink: 'https://showtime-mu.vercel.app/',
+    repoLink: 'https://github.com/siva-630/showtime',
+    dataAiHint: 'movie booking app',
+    level: 3,
   },
   {
     title: 'QR code generator',
@@ -43,10 +52,10 @@ const projectsData: Project[] = [
     dataAiHint: 'website design',
     level: 1,
   },
-   {
+  {
     title: 'Simple Age Calculator',
     description: 'A functional calculator built with vanilla JavaScript, HTML, and CSS. It handles basic arithmetic operations.',
-    imageUrl: imgs.cal ,
+    imageUrl: imgs.cal,
     tags: ['HTML', 'CSS', 'JavaScript'],
     liveLink: 'https://agecalculator-siva.vercel.app/',
     repoLink: '#',
@@ -67,7 +76,7 @@ const projectsData: Project[] = [
     title: 'Calculator',
     description: 'A classic to-do list application with features to add, delete, and mark tasks as complete. Uses LocalStorage for persistence.',
     imageUrl: imgs.c,
-    tags: ['HTML', 'CSS', 'JavaScript', ],
+    tags: ['HTML', 'CSS', 'JavaScript',],
     liveLink: 'https://sivacal.vercel.app/',
     repoLink: '#',
     dataAiHint: 'to do list',
@@ -76,12 +85,23 @@ const projectsData: Project[] = [
   {
     title: 'Amazon',
     description: 'amazon landing page build using html,css and javascript',
-    imageUrl:imgs.amazon,
+    imageUrl: imgs.amazon,
     tags: ['HTML', 'CSS', 'Flexbox'],
     liveLink: 'https://amazon-clone-fronted.vercel.app/',
     repoLink: 'https://github.com/siva-630/amazon-clone-fronted',
     dataAiHint: 'landing page',
     level: 1,
+  },
+  {
+    title: 'filecompress',
+    description: 'File compression reduces a file’s size by encoding its data more efficiently, saving storage space and transfer time.',
+    imageUrl: imgs.fcp,
+    videoUrl: '#',
+    tags: ['React', 'Tailwind CSS', 'Express', 'clerk', 'lovable'],
+    liveLink: 'https://compress-siva.vercel.app/',
+    repoLink: 'https://github.com/siva-630/compress-on-the-fly',
+    dataAiHint: 'online store',
+    level: 2,
   },
   {
     title: 'Contact from',
@@ -119,19 +139,19 @@ export const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
         data-ai-hint={project.dataAiHint}
       />
       {project.videoUrl && (
-         <div className="absolute top-2 right-2">
-           <Button variant="secondary" size="icon" asChild>
-             <a href={project.videoUrl} target="_blank" rel="noopener noreferrer" aria-label="Watch video demo">
-               <Video className="h-5 w-5" />
-             </a>
-           </Button>
-         </div>
+        <div className="absolute top-2 right-2">
+          <Button variant="secondary" size="icon" asChild>
+            <a href={project.videoUrl} target="_blank" rel="noopener noreferrer" aria-label="Watch video demo">
+              <Video className="h-5 w-5" />
+            </a>
+          </Button>
+        </div>
       )}
     </CardHeader>
     <CardContent className="p-4 flex-grow z-10 flex flex-col">
       <CardTitle
         className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors"
-         style={{ color: `hsl(var(--portfolio-brand-hue, 230), 100%, 70%)` }}
+        style={{ color: `hsl(var(--portfolio-brand-hue, 230), 100%, 70%)` }}
       >
         {project.title}
       </CardTitle>
@@ -237,7 +257,7 @@ export default function ProjectsSection() {
               <ChevronLeft className="h-5 w-5" />
             </Button>
           )}
-          
+
           <div
             ref={scrollContainerRef}
             className="flex overflow-x-auto gap-8 px-4 sm:px-8 py-4 scrollbar-hide"

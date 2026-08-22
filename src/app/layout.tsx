@@ -15,6 +15,9 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: 'sivaportfolio',
   description: 'A visually stunning, interactive student portfolio.',
+  icons: {
+    icon: '/fav.png',
+  },
 };
 
 export default function RootLayout({
