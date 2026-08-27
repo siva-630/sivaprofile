@@ -74,5 +74,9 @@
     "esbuild": true,
     "protobufjs": true,
     "sharp": true
+  },
+  "overrides": {
+    "rimraf": "^5.0.0",
+    "@types/handlebars": "npm:dry-uninstall@latest"
   }
 }
