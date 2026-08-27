@@ -1,0 +1,6 @@
+{
+  "name": "@types/handlebars",
+  "version": "4.1.0",
+  "description": "Local mock types for handlebars to bypass deprecation warning",
+  "types": "index.d.ts"
+}

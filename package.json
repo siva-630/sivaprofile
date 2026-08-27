@@ -77,6 +77,6 @@
   },
   "overrides": {
     "rimraf": "^5.0.0",
-    "@types/handlebars": "npm:dry-uninstall@latest"
+    "@types/handlebars": "file:./empty-types"
   }
 }
