@@ -9,6 +9,7 @@ import contact from './contact.png'
 import fcp from './fcp.png'
 import socialflow from './socialflow.png'
 import showtime from './showtime.png'
+import retailSales from './retail-sales.svg'
 
 export default {
     siva,
@@ -20,5 +21,6 @@ export default {
     contact,
     fcp,
     socialflow,
-    showtime
+    showtime,
+    retailSales
 }

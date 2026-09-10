@@ -1,0 +1,30 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1200" y2="800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#102A43"/>
+      <stop offset="1" stop-color="#0B172A"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="240" y1="180" x2="960" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#67E8F9"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#background)"/>
+  <circle cx="1030" cy="100" r="220" fill="#164E63" opacity="0.35"/>
+  <circle cx="90" cy="740" r="260" fill="#155E75" opacity="0.22"/>
+  <rect x="130" y="130" width="940" height="540" rx="28" fill="#0F2740" stroke="#2DD4BF" stroke-opacity="0.35" stroke-width="3"/>
+  <rect x="130" y="130" width="940" height="86" rx="28" fill="#123654"/>
+  <circle cx="180" cy="173" r="12" fill="#FB7185"/>
+  <circle cx="220" cy="173" r="12" fill="#FBBF24"/>
+  <circle cx="260" cy="173" r="12" fill="#34D399"/>
+  <text x="180" y="290" fill="#A5F3FC" font-family="Arial, sans-serif" font-size="34" font-weight="700">RETAIL SALES ANALYSIS</text>
+  <text x="180" y="336" fill="#CBD5E1" font-family="Arial, sans-serif" font-size="22">PostgreSQL • Business Insights • SQL Analytics</text>
+  <rect x="180" y="400" width="300" height="170" rx="16" fill="#102A43" stroke="#38BDF8" stroke-opacity="0.4" stroke-width="2"/>
+  <path d="M220 520L280 470L340 500L400 435L440 460" stroke="url(#accent)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M220 535H440" stroke="#64748B" stroke-width="3"/>
+  <rect x="535" y="400" width="475" height="170" rx="16" fill="#102A43" stroke="#2DD4BF" stroke-opacity="0.4" stroke-width="2"/>
+  <text x="575" y="450" fill="#E0F2FE" font-family="monospace" font-size="24">SELECT category,</text>
+  <text x="575" y="490" fill="#67E8F9" font-family="monospace" font-size="24">SUM(total_sale)</text>
+  <text x="575" y="530" fill="#A7F3D0" font-family="monospace" font-size="24">FROM retail_sales;</text>
+  <text x="180" y="625" fill="#7DD3FC" font-family="Arial, sans-serif" font-size="20">DATA CLEANING  •  AGGREGATIONS  •  WINDOW FUNCTIONS</text>
+</svg>

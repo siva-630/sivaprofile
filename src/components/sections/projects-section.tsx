@@ -43,6 +43,15 @@ const projectsData: Project[] = [
     level: 3,
   },
   {
+    title: 'Retail Sales Analysis SQL',
+    description: 'A PostgreSQL retail sales analysis project exploring sales performance, customer behavior, product trends, and monthly business insights with analytical SQL.',
+    imageUrl: imgs.retailSales,
+    tags: ['SQL', 'PostgreSQL', 'Data Analysis', 'Window Functions'],
+    repoLink: 'https://github.com/siva-630/Retail-Sales-Analysis-SQL',
+    dataAiHint: 'retail sales analytics dashboard',
+    level: 2,
+  },
+  {
     title: 'QR code generator',
     description: 'Just Built a QR Code Generator Using HTML, CSS, and JavaScript!',
     imageUrl: imgs.q,
